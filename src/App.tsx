@@ -84,8 +84,6 @@ const SCENARIOS: Record<ScenarioType, ScenarioParams> = {
   }
 };
 
-const DEFAULT_PAGE_SCALE = 0.5;
-
 // --- Components ---
 
 const VerticalSlider = ({ 
@@ -220,25 +218,20 @@ export default function App() {
   }, [params]);
 
   return (
-    <div className="app-shell">
-      <div
-        className="app-scale-frame"
-        style={{ '--page-scale': String(DEFAULT_PAGE_SCALE) } as React.CSSProperties}
-      >
-        <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-blue-100">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-blue-100">
       {/* Header */}
       <header className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-12 h-24 flex items-center justify-between">
+        <div className="max-w-[1480px] mx-auto px-6 lg:px-10 h-20 lg:h-24 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tighter">商业价值测算面板</h1>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-8 py-12">
+      <main className="max-w-[1480px] mx-auto px-6 lg:px-10 py-8 lg:py-10">
         
         {/* Scenario Presets */}
-        <div className="flex gap-4 mb-12">
+        <div className="hidden">
           {(['conservative', 'moderate', 'optimistic'] as ScenarioType[]).map((type) => (
             <button
               key={type}
@@ -255,10 +248,29 @@ export default function App() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] gap-8 xl:gap-10 items-start">
           
           {/* Left Column: Parameters */}
-          <div className="lg:col-span-6 space-y-12">
+          <div className="space-y-8">
+            <div className="bg-white p-6 rounded-[28px] shadow-sm border border-slate-100">
+              <div className="flex flex-wrap gap-3">
+                {(['conservative', 'moderate', 'optimistic'] as ScenarioType[]).map((type) => (
+                  <button
+                    key={`preset-${type}`}
+                    onClick={() => applyScenario(type)}
+                    className={cn(
+                      "px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300",
+                      activeScenario === type
+                        ? "bg-blue-600 text-white shadow-lg shadow-blue-100"
+                        : "bg-slate-50 text-slate-400 hover:bg-slate-100 border border-slate-100"
+                    )}
+                  >
+                    {type === 'conservative' ? '淇濆畧' : type === 'moderate' ? '涓瓑' : '涔愯'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* GMV Section */}
             <section className="bg-white p-10 rounded-[32px] shadow-sm border border-slate-100">
               <div className="mb-12">
@@ -381,8 +393,8 @@ export default function App() {
           </div>
 
           {/* Right Column: Results */}
-          <div className="lg:col-span-6 space-y-12">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ResultCard 
                 title="预估增量 GMV" 
                 value={results.deltaGmvStr} 
@@ -509,8 +521,6 @@ export default function App() {
           </div>
         </div>
       </main>
-        </div>
-      </div>
     </div>
   );
 }
