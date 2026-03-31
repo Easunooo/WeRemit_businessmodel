@@ -84,6 +84,8 @@ const SCENARIOS: Record<ScenarioType, ScenarioParams> = {
   }
 };
 
+const DEFAULT_PAGE_SCALE = 0.5;
+
 // --- Components ---
 
 const VerticalSlider = ({ 
@@ -218,7 +220,12 @@ export default function App() {
   }, [params]);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-blue-100">
+    <div className="app-shell">
+      <div
+        className="app-scale-frame"
+        style={{ '--page-scale': String(DEFAULT_PAGE_SCALE) } as React.CSSProperties}
+      >
+        <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-blue-100">
       {/* Header */}
       <header className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-12 h-24 flex items-center justify-between">
@@ -502,6 +509,8 @@ export default function App() {
           </div>
         </div>
       </main>
+        </div>
+      </div>
     </div>
   );
 }
